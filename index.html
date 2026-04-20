@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Dashboard de Calificaciones — Órbita</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Manrope:wght@600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<header class="hdr">
+  <div class="hdr-logo"><div class="logo-o">O</div>Órbita</div>
+  <div class="hdr-mid" id="hdrMid">Colegio Pruebas 1</div>
+  <div class="hdr-av">PR</div>
+</header>
+
+<div class="sidebar-overlay" id="sbOverlay" onclick="closeSidebar()"></div>
+<button class="sb-toggle" onclick="toggleSidebar()" title="Abrir panel">☰</button>
+
+<div class="subhdr">
+  <div class="breadcrumb">Mis contenidos <span>›</span> <strong>Calificaciones</strong></div>
+  <div class="group-badge" id="grpBadge">—</div>
+</div>
+
+<div class="title-strip">
+  <div class="page-title" id="pgTitle">Dashboard de Calificaciones</div>
+  <div class="group-badge" id="grpBadgeTitle" style="display:none"></div>
+</div>
+
+<div class="layout">
+  <aside class="sidebar">
+    <div class="sb-card">
+      <div class="sb-hdr is-open" id="sbStuHdr" onclick="toggleSbSec('sbStuBody','sbStuHdr')">
+        <div class="sb-hdr-left"><div class="sb-ico" style="background:var(--coral-p)">👥</div>Estudiantes</div>
+        <div class="sb-hdr-r"><span class="sb-cnt" id="stuCount">—</span><span class="sb-chev">▾</span></div>
+      </div>
+      <div class="sb-body is-open" id="sbStuBody">
+        <div class="sb-search"><span class="sb-si">🔍</span><input type="text" id="searchInput" placeholder="Buscar estudiante…" oninput="filterStudents()"></div>
+        <div class="stu-list" id="stuList"></div>
+      </div>
+    </div>
+    <div class="sb-card">
+      <div class="sb-hdr" id="sbActHdr" onclick="toggleSbSec('sbActBody','sbActHdr')">
+        <div class="sb-hdr-left"><div class="sb-ico" style="background:var(--teal-p)">📋</div>Actividades</div>
+        <div class="sb-hdr-r"><span class="sb-cnt" id="actCount">—</span><span class="sb-chev">▾</span></div>
+      </div>
+      <div class="sb-body" id="sbActBody">
+        <div class="act-sb" id="actSbList"></div>
+      </div>
+    </div>
+  </aside>
+
+  <main class="main">
+    <!-- OVERVIEW -->
+    <div class="ov-view" id="ovView">
+      <div class="kpi-grid" id="kpiGrid"></div>
+      <div class="units-row" id="unitsRow"></div>
+      <div class="uexp-wrap" id="uexpWrap"><div class="uexp" id="uexpPanel"></div></div>
+      <div class="bot-grid">
+        <div class="hist-card">
+          <div class="card-ttl">Distribución de Notas</div>
+          <div class="card-sub">Actividades calificadas del grupo</div>
+          <div class="hchart" id="hChart"></div>
+        </div>
+        <div class="tbl-card">
+          <div class="tbl-hdr">
+            <div class="card-ttl">Ranking de Estudiantes</div>
+            <div class="card-sub">Haz clic para ver el detalle</div>
+          </div>
+          <div style="overflow-x:auto">
+            <table><thead><tr>
+              <th style="width:36px">#</th>
+              <th>Estudiante</th>
+              <th onclick="sortTbl()" style="cursor:pointer">Promedio ↕</th>
+              <th>U1</th><th>U2</th><th>U3</th>
+              <th>Entregas</th>
+            </tr></thead>
+            <tbody id="rankBody"></tbody></table>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- STUDENT DETAIL -->
+    <div class="detail-view" id="detailView">
+      <button class="back-btn" onclick="goBack()">← Volver a Vista General</button>
+      <div class="dhero" id="dHero"></div>
+      <div class="utabs" id="uTabs"></div>
+      <div class="ses-con" id="sesCon"></div>
+    </div>
+
+    <!-- ACTIVITY VIEW -->
+    <div class="act-view" id="actView">
+      <button class="back-btn" id="actBackBtn" onclick="goBackFromActivity()">← Volver</button>
+      <div class="act-hero" id="actHero"></div>
+      <div class="act-kpis" id="actKpis"></div>
+      <div class="act-content" id="actContent"></div>
+    </div>
+  </main>
+</div>
+
+<script src="script.js"></script>
+</body>
+</html>
