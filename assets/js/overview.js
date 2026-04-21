@@ -157,6 +157,9 @@ function renderExpandedUnitPanel(uIdx) {
     `;
     container.appendChild(sesBlock);
     const body = sesBlock.querySelector('.exp-ses-body');
+    // Actualizar la creación de actividades en overview.js
+// Dentro de renderExpandedUnitPanel, reemplazar la parte de actividades:
+
     ses.actividades.forEach((act, aIdx) => {
       const studentGrades = DATA.estudiantes.map((s, sI) => {
         const foundSes = s.unidades[uIdx].sesiones[sIdx];
@@ -167,26 +170,118 @@ function renderExpandedUnitPanel(uIdx) {
       const actAvgVal = avg(gradedActs.map(g => g.nota));
       const doneCount = gradedActs.length;
       const assignedCount = studentGrades.filter(g => g.estado === 'asignada').length;
+      
       const actDiv = document.createElement('div');
       actDiv.className = 'exp-act';
-      const chips = studentGrades.map(g => {
-        if (g.estado !== 'asignada') return `<div class="sgc" style="background:var(--bg);color:var(--tm)"><span class="sgc-init">${g.name}</span><span class="sgc-grade" style="font-size:9px">N/A</span><div class="sgc-tip">${g.name}: No asignada</div></div>`;
-        if (g.nota === null) return `<div class="sgc" style="background:var(--warn-p);color:var(--warn)"><span class="sgc-init">${g.name}</span><span class="sgc-grade">—</span><div class="sgc-tip">${g.name}: Pendiente</div></div>`;
-        const { bg, color } = getBgAndColor(g.nota);
-        return `<div class="sgc" style="background:${bg};color:${color}"><span class="sgc-init">${g.name}</span><span class="sgc-grade">${g.nota}</span><div class="sgc-tip">${g.name}: ${g.nota}</div></div>`;
-      }).join('');
+      
+      // Crear encabezado con doble acción
       actDiv.innerHTML = `
         <div class="exp-act-hdr">
-          <div class="exp-act-link" onclick="openActivityView(${uIdx},'${ses.nombre.replace(/'/g, "\\'")}','${act.nombre.replace(/'/g, "\\'")}','general')" title="Ver detalles de la actividad">
-            <span class="exp-act-marker" style="color:${act.estado === 'asignada' ? getGradeColor(actAvgVal) : 'var(--tm)'}">${act.estado === 'asignada' ? '◉' : '○'}</span>
+          <button class="exp-act-toggle" data-tooltip="Ver notas de estudiantes">
+            <span class="chevron">▶</span>
+          </button>
+          <div class="exp-act-info">
+            <span class="exp-act-marker" style="color:${act.estado === 'asignada' ? getGradeColor(actAvgVal) : 'var(--tm)'}"></span>
             <div class="exp-act-name">${act.nombre}</div>
-            <span class="exp-act-arrow">↗</span>
           </div>
-          <div class="exp-act-avgbox"><span class="exp-act-avglbl">Promedio: </span><span class="exp-act-avgval" style="color:${getGradeColor(actAvgVal)}">${actAvgVal ?? '—'}</span></div>
-          <span class="exp-act-done">${doneCount}/${assignedCount}</span>
+          <div class="exp-act-stats">
+            <div class="exp-act-avgbox">
+              <span class="exp-act-avglbl">Promedio</span>
+              <span class="exp-act-avgval" style="color:${getGradeColor(actAvgVal)}">${actAvgVal ?? '—'}</span>
+            </div>
+            <div class="exp-act-done">
+              ${doneCount}/${assignedCount}
+            </div>
+            <button class="exp-act-detail-btn" data-view-detail>
+              ► Ver detalle
+            </button>
+          </div>
         </div>
-        <div class="sgc-row">${chips}</div>
+        <div class="exp-act-body"></div>
       `;
+      
+      // Crear lista de estudiantes
+      const studentList = document.createElement('div');
+      studentList.className = 'sgc-row';
+      
+      studentGrades.forEach((g) => {
+        const studentItem = document.createElement('div');
+        studentItem.className = 'sgc';
+        
+        let statusText = '';
+        let statusClass = '';
+        let gradeText = '—';
+        let fillPercent = 0;
+        let fillColor = 'var(--border)';
+        let gradeColor = 'var(--tm)';
+        
+        if (g.estado !== 'asignada') {
+          statusText = 'No asignada';
+          statusClass = 'na';
+          gradeText = '—';
+          fillPercent = 0;
+          fillColor = 'var(--border)';
+          gradeColor = 'var(--tm)';
+        } else if (g.nota === null) {
+          statusText = 'Pendiente';
+          statusClass = 'pending';
+          gradeText = '—';
+          fillPercent = 0;
+          fillColor = 'var(--warn)';
+          gradeColor = 'var(--warn)';
+        } else {
+          statusText = 'Entregado';
+          statusClass = 'completed';
+          gradeText = g.nota;
+          fillPercent = g.nota;
+          const { color } = getBgAndColor(g.nota);
+          fillColor = color;
+          gradeColor = color;
+        }
+        
+        const avatarColor = AVATAR_COLORS[g.idx % AVATAR_COLORS.length];
+        const initials = getInitials(g.name);
+        
+        studentItem.setAttribute('data-status', statusClass);
+        studentItem.innerHTML = `
+          <div class="sgc-student">
+            <div class="sgc-avatar" style="background: ${avatarColor}">${initials}</div>
+            <span title="${g.name}">${g.name}</span>
+          </div>
+          <div class="sgc-progress">
+            <div class="sgc-bar-bg">
+              <div class="sgc-bar-fill" style="background: ${fillColor}; width: ${fillPercent}%"></div>
+            </div>
+            <div class="sgc-grade" style="color: ${gradeColor}">${gradeText}</div>
+          </div>
+          <div class="sgc-status ${statusClass}">${statusText}</div>
+        `;
+        
+        studentList.appendChild(studentItem);
+      });
+      
+      actDiv.querySelector('.exp-act-body').appendChild(studentList);
+      
+      // Event listeners
+      const toggleBtn = actDiv.querySelector('.exp-act-toggle');
+      const infoArea = actDiv.querySelector('.exp-act-info');
+      const detailBtn = actDiv.querySelector('.exp-act-detail-btn');
+      
+      toggleBtn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        actDiv.classList.toggle('is-open');
+      });
+      
+      infoArea.addEventListener('click', (e) => {
+        e.stopPropagation();
+        actDiv.classList.toggle('is-open');
+      });
+      
+      detailBtn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        openActivityView(uIdx, ses.nombre, act.nombre, 'general');
+      });
+      
       body.appendChild(actDiv);
     });
   });
