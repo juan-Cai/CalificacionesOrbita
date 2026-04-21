@@ -31,7 +31,7 @@
 <div class="layout">
   <aside class="sidebar">
     <div class="sb-card">
-      <div class="sb-hdr is-open" id="sbStuHdr" onclick="toggleSbSec('sbStuBody','sbStuHdr')">
+      <div class="sb-hdr is-open" id="sbStuHdr" onclick="toggleAug(this)">
         <div class="sb-hdr-left"><div class="sb-ico" style="background:var(--coral-p)">👥</div>Estudiantes</div>
         <div class="sb-hdr-r"><span class="sb-cnt" id="stuCount">—</span><span class="sb-chev">▾</span></div>
       </div>
@@ -41,7 +41,7 @@
       </div>
     </div>
     <div class="sb-card">
-      <div class="sb-hdr" id="sbActHdr" onclick="toggleSbSec('sbActBody','sbActHdr')">
+      <div class="sb-hdr" id="sbActHdr" onclick="toggleAug(this)">
         <div class="sb-hdr-left"><div class="sb-ico" style="background:var(--teal-p)">📋</div>Actividades</div>
         <div class="sb-hdr-r"><span class="sb-cnt" id="actCount">—</span><span class="sb-chev">▾</span></div>
       </div>
@@ -72,7 +72,7 @@
             <table><thead><tr>
               <th style="width:36px">#</th>
               <th>Estudiante</th>
-              <th onclick="sortTbl()" style="cursor:pointer">Promedio ↕</th>
+              <th onclick="sortRanking()" style="cursor:pointer">Promedio ↕</th>
               <th>U1</th><th>U2</th><th>U3</th>
               <th>Entregas</th>
             </tr></thead>
