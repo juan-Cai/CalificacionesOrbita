@@ -157,9 +157,6 @@ function renderExpandedUnitPanel(uIdx) {
     `;
     container.appendChild(sesBlock);
     const body = sesBlock.querySelector('.exp-ses-body');
-    // Actualizar la creación de actividades en overview.js
-// Dentro de renderExpandedUnitPanel, reemplazar la parte de actividades:
-
     ses.actividades.forEach((act, aIdx) => {
       const studentGrades = DATA.estudiantes.map((s, sI) => {
         const foundSes = s.unidades[uIdx].sesiones[sIdx];
