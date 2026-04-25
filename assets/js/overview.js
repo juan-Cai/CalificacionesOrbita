@@ -253,7 +253,7 @@ function renderExpandedUnitPanel(uIdx) {
           </div>
           <div class="sgc-status ${statusClass}">${statusText}</div>
         `;
-        
+        studentItem.onclick = () => selectStudent(g.studentId);
         studentList.appendChild(studentItem);
       });
       

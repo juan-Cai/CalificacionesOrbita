@@ -1,5 +1,4 @@
 import { DATA } from './data.js';
-import { renderSidebar, filterStudents } from './sidebar.js';
 import { renderOverview, sortRanking } from './overview.js';
 import { selectStudent, goBackToGeneral } from './studentDetail.js';
 import { openActivityView, goBackFromActivity } from './activityView.js';
@@ -11,7 +10,6 @@ window.sortDirection = -1;
 window.activeExpandedUnit = null;
 
 // Exponer funciones que se llaman desde HTML (onclick)
-window.filterStudents = filterStudents;
 window.sortRanking = sortRanking;
 window.selectStudent = selectStudent;
 window.goBack = goBackToGeneral;
@@ -31,5 +29,4 @@ window.setTab = (tab) => {
 document.getElementById('grpBadge').textContent = DATA.grupo;
 document.getElementById('hdrMid').textContent = DATA.colegio;
 
-renderSidebar();
 renderOverview();

@@ -15,8 +15,6 @@
   <div class="hdr-av">PR</div>
 </header>
 
-<div class="sidebar-overlay" id="sbOverlay" onclick="closeSidebar()"></div>
-<button class="sb-toggle" onclick="toggleSidebar()" title="Abrir panel">☰</button>
 
 <div class="subhdr">
   <div class="breadcrumb">Mis contenidos <span>›</span> <strong>Calificaciones</strong></div>
@@ -29,27 +27,6 @@
 </div>
 
 <div class="layout">
-  <aside class="sidebar">
-    <div class="sb-card">
-      <div class="sb-hdr is-open" id="sbStuHdr" onclick="toggleAug(this)">
-        <div class="sb-hdr-left"><div class="sb-ico" style="background:var(--coral-p)">👥</div>Estudiantes</div>
-        <div class="sb-hdr-r"><span class="sb-cnt" id="stuCount">—</span><span class="sb-chev">▾</span></div>
-      </div>
-      <div class="sb-body is-open" id="sbStuBody">
-        <div class="sb-search"><span class="sb-si">🔍</span><input type="text" id="searchInput" placeholder="Buscar estudiante…" oninput="filterStudents()"></div>
-        <div class="stu-list" id="stuList"></div>
-      </div>
-    </div>
-    <div class="sb-card">
-      <div class="sb-hdr" id="sbActHdr" onclick="toggleAug(this)">
-        <div class="sb-hdr-left"><div class="sb-ico" style="background:var(--teal-p)">📋</div>Actividades</div>
-        <div class="sb-hdr-r"><span class="sb-cnt" id="actCount">—</span><span class="sb-chev">▾</span></div>
-      </div>
-      <div class="sb-body" id="sbActBody">
-        <div class="act-sb" id="actSbList"></div>
-      </div>
-    </div>
-  </aside>
 
   <main class="main">
     <!-- OVERVIEW -->
