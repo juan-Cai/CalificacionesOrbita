@@ -337,7 +337,7 @@ function renderHistogram() {
 
 // --- Ranking dinámico (thead y tbody generados en cada llamada) ---
 let sortField = 'avg';
-let sortDirection = 1; // 1 asc, -1 desc
+let sortDirection = -1; // 1 asc, -1 desc
 
 export function sortRanking(field) {
   if (sortField === field) sortDirection *= -1;
