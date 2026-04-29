@@ -47,11 +47,13 @@
           </div>
           <div style="overflow-x:auto">
             <table><thead><tr>
-              <th style="width:36px">#</th>
-              <th>Estudiante</th>
-              <th onclick="sortRanking()" style="cursor:pointer">Promedio ↕</th>
-              <th>U1</th><th>U2</th><th>U3</th>
-              <th>Entregas</th>
+              <th style="width:36px" onclick="sortRanking('rank')">#</th>
+              <th onclick="sortRanking('name')">Estudiante ↕</th>
+              <th onclick="sortRanking('avg')" style="cursor:pointer">Promedio ↕</th>
+              <th onclick="sortRanking('unit_0')">U1 ↕</th>
+              <th onclick="sortRanking('unit_1')">U2 ↕</th>
+              <th onclick="sortRanking('unit_2')">U3 ↕</th>
+              <th onclick="sortRanking('progress')">Entregas</th>
             </tr></thead>
             <tbody id="rankBody"></tbody></table>
           </div>

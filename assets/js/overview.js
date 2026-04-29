@@ -316,36 +316,121 @@ function renderHistogram() {
   });
 }
 
-export function sortRanking() {
-  window.sortDirection *= -1;
+window.sortDirection = 1;   // 1 asc, -1 desc
+window.sortField = 'avg';   // campo actual
+
+export function sortRanking(field) {
+  if (window.sortField === field) {
+    window.sortDirection *= -1; // invierte
+  } else {
+    window.sortField = field;
+    window.sortDirection = 1; // default ascendente
+  }
   renderRanking();
 }
 
+function getSortValue(s, field) {
+  const sa = studentAvg(s);
+  const unitAverages = s.unidades.map(u => unitAvg(u));
+
+  const allActs = allA(s);
+  const assigned = allActs.filter(a => a.estado === 'asignada');
+  const done = assigned.filter(a => a.nota !== null);
+
+  switch(field) {
+    case 'rank': return s.rank;
+    case 'name': return s.nombre?.toLowerCase() || '';
+    case 'avg': return sa ?? -1;
+    case 'unit_0': return unitAverages[0] ?? -1;
+    case 'unit_1': return unitAverages[1] ?? -1;
+    case 'unit_2': return unitAverages[2] ?? -1;
+    case 'progress': return assigned.length ? (done.length / assigned.length) : 0;
+    default: return '';
+  }
+}
+
+function smartSort(a, b, field) {
+  let va = getSortValue(a, field);
+  let vb = getSortValue(b, field);
+
+  const isNumber = typeof va === 'number' && typeof vb === 'number';
+
+  if (isNumber) {
+    return (va - vb) * window.sortDirection;
+  } else {
+    return va.localeCompare(vb, 'es', { sensitivity: 'base' }) * window.sortDirection;
+  }
+}
+
+function assignRankingByAverage() {
+  const baseSorted = [...DATA.estudiantes]
+    .sort((a,b) => (studentAvg(b)||0) - (studentAvg(a)||0));
+
+  baseSorted.forEach((s, index) => {
+    s.rank = index + 1;
+  });
+}
+
 function renderRanking() {
-  const sorted = [...DATA.estudiantes].sort((a,b) => ((studentAvg(b)||0) - (studentAvg(a)||0)) * window.sortDirection);
+  // ✅ 1. Ranking SIEMPRE basado en promedio (única fuente de verdad)
+  assignRankingByAverage();
+
+  // ✅ 2. Orden visual independiente
+  const sorted = [...DATA.estudiantes]
+    .sort((a,b) => smartSort(a, b, window.sortField));
+
   const body = document.getElementById('rankBody');
   body.innerHTML = '';
+
   const medals = ['🥇','🥈','🥉'];
-  sorted.forEach((s, i) => {
+
+  sorted.forEach((s) => {
     const sa = studentAvg(s);
     const unitAverages = s.unidades.map(u => unitAvg(u));
     const allActs = allA(s);
     const assigned = allActs.filter(a => a.estado === 'asignada');
     const done = assigned.filter(a => a.nota !== null);
     const studentIndex = DATA.estudiantes.findIndex(st => st.id === s.id);
+
     const tr = document.createElement('tr');
+
     tr.innerHTML = `
-      <td style="font-size:14px;text-align:center">${i < 3 ? medals[i] : `<span style="font-size:11px;font-weight:700;color:var(--tm)">${i+1}</span>`}</td>
-      <td><div class="td-stu"><div class="s-av" style="background:${AVATAR_COLORS[studentIndex % AVATAR_COLORS.length]};width:26px;height:26px;font-size:10px">${getInitials(s.nombre)}</div><span class="td-name">${s.nombre}</span></div></td>
+      <td style="font-size:14px;text-align:center">
+        ${s.rank <= 3 
+          ? medals[s.rank - 1] 
+          : `<span style="font-size:11px;font-weight:700;color:var(--tm)">${s.rank}</span>`
+        }
+      </td>
+      <td>
+        <div class="td-stu">
+          <div class="s-av" style="background:${AVATAR_COLORS[studentIndex % AVATAR_COLORS.length]};width:26px;height:26px;font-size:10px">
+            ${getInitials(s.nombre)}
+          </div>
+          <span class="td-name">${s.nombre}</span>
+        </div>
+      </td>
       <td><span class="td-num" style="color:${getGradeColor(sa)}">${sa ?? '—'}</span></td>
-      ${unitAverages.map(u => `<td><div style="display:flex;align-items:center;gap:6px"><div class="mini-bw"><div class="mini-b" style="width:${u??0}%;background:${getBarColor(u)}"></div></div><span style="font-size:12px;font-weight:700;color:${getGradeColor(u)}">${u ?? '—'}</span></div></td>`).join('')}
-      <td><span style="font-size:12px;font-weight:600;color:var(--tb)">${done.length}/${assigned.length}</span></td>
+      ${unitAverages.map(u => `
+        <td>
+          <div style="display:flex;align-items:center;gap:6px">
+            <div class="mini-bw">
+              <div class="mini-b" style="width:${u??0}%;background:${getBarColor(u)}"></div>
+            </div>
+            <span style="font-size:12px;font-weight:700;color:${getGradeColor(u)}">${u ?? '—'}</span>
+          </div>
+        </td>
+      `).join('')}
+      <td>
+        <span style="font-size:12px;font-weight:600;color:var(--tb)">
+          ${done.length}/${assigned.length}
+        </span>
+      </td>
     `;
+
     tr.onclick = () => selectStudent(s.id);
     body.appendChild(tr);
   });
 }
-
 // Exponer funciones globales necesarias para onclick
 window.closeExpandedUnit = closeExpandedUnit;
 window.toggleUnitExpanded = toggleUnitExpanded; // aunque no se usa directamente
