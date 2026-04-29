@@ -27,6 +27,5 @@ window.setTab = (tab) => {
 
 // Inicializar la UI
 document.getElementById('grpBadge').textContent = DATA.grupo;
-document.getElementById('hdrMid').textContent = DATA.colegio;
 
 renderOverview();
