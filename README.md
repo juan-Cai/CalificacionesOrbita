@@ -1,11 +1,9 @@
 # 🚀 CalificacionesOrbita  
 ## 📊 Panel Académico – Gestor Inteligente de Calificaciones  
 
-![Preview](https://via.placeholder.com/800x450?text=Academic+Dashboard+Preview)
 
 [![JavaScript](https://img.shields.io/badge/JavaScript-ES6+-F7DF1E?logo=javascript&logoColor=black)](https://developer.mozilla.org/en-US/docs/Web/JavaScript)
 [![CSS3](https://img.shields.io/badge/CSS3-Custom-1572B6?logo=css3)](https://developer.mozilla.org/en-US/docs/Web/CSS)
-[![License](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
 
 ---
 
