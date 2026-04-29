@@ -129,7 +129,7 @@ body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--tb);min-hei
 .uc.active .uc-foot{color:var(--coral)}
 
 /* UNIT EXPANSION */
-.uexp-wrap{max-height:0;overflow:hidden;transition:max-height .5s cubic-bezier(.4,0,.2,1)}
+.uexp-wrap{max-height:0;overflow:hidden;transition:max-height .5s cubic-bezier(.4,0,.2,1);grid-column:1/-1}
 .uexp-wrap.is-open{max-height:2400px}
 .uexp{background:var(--card);border-radius:var(--r);box-shadow:var(--sh-md);overflow:hidden;border:1px solid var(--border)}
 .uexp-top{padding:14px 18px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;gap:10px}

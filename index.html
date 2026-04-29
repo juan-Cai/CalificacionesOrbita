@@ -15,7 +15,6 @@
   <div class="hdr-av">PR</div>
 </header>
 
-
 <div class="subhdr">
   <div class="breadcrumb">Mis contenidos <span>›</span> <strong>Calificaciones</strong></div>
   <div class="group-badge" id="grpBadge">—</div>
@@ -33,7 +32,6 @@
     <div class="ov-view" id="ovView">
       <div class="kpi-grid" id="kpiGrid"></div>
       <div class="units-row" id="unitsRow"></div>
-      <div class="uexp-wrap" id="uexpWrap"><div class="uexp" id="uexpPanel"></div></div>
       <div class="bot-grid">
         <div class="hist-card">
           <div class="card-ttl">Distribución de Notas</div>
@@ -46,16 +44,10 @@
             <div class="card-sub">Haz clic para ver el detalle</div>
           </div>
           <div style="overflow-x:auto">
-            <table><thead><tr>
-              <th style="width:36px" onclick="sortRanking('rank')">#</th>
-              <th onclick="sortRanking('name')">Estudiante ↕</th>
-              <th onclick="sortRanking('avg')" style="cursor:pointer">Promedio ↕</th>
-              <th onclick="sortRanking('unit_0')">U1 ↕</th>
-              <th onclick="sortRanking('unit_1')">U2 ↕</th>
-              <th onclick="sortRanking('unit_2')">U3 ↕</th>
-              <th onclick="sortRanking('progress')">Entregas</th>
-            </tr></thead>
-            <tbody id="rankBody"></tbody></table>
+            <table id="rankingTable">
+              <thead id="rankHead"></thead>
+              <tbody id="rankBody"></tbody>
+            </table>
           </div>
         </div>
       </div>

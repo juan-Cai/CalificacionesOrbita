@@ -1,8 +1,12 @@
-import { DATA, AVATAR_COLORS } from './data.js';
+import { DATA, AVATAR_COLORS, UNIT_COLORS } from './data.js';
 import { avg, getGradeColor, getBarColor, getBgAndColor, getInitials } from './utils.js';
 import { currentStudent, setPreviousView, setCurrentActivityRef, previousView } from './state.js';
 import { selectStudent } from './studentDetail.js';
 import { goBackToGeneral } from './studentDetail.js';
+
+function getUnitColor(idx) {
+  return UNIT_COLORS[idx % UNIT_COLORS.length];
+}
 
 export function openActivityView(uIdx, sesNom, actNom, fromView) {
   setPreviousView(fromView);
@@ -20,7 +24,7 @@ export function openActivityView(uIdx, sesNom, actNom, fromView) {
   const maxGrade = gradedList.length ? Math.max(...gradedList.map(g => g.nota)) : null;
   const minGrade = gradedList.length ? Math.min(...gradedList.map(g => g.nota)) : null;
   const unitName = DATA.estudiantes[0].unidades[uIdx].nombre;
-  const heroColor = ['#E8735A','#26C6C7','#10B981'][uIdx] || '#E8735A';
+  const heroColor = getUnitColor(uIdx);
 
   document.getElementById('ovView').classList.add('hide');
   document.getElementById('detailView').classList.remove('show');
